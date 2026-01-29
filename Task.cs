@@ -11,5 +11,6 @@ public class Task
         this.id = new Guid();
         this.description = description;
         this.status = false;
+        this.title = title;
     }
 }
