@@ -85,8 +85,20 @@ class Program
             return;
         }
 
+        if (title.Length > 100)
+        {
+            Console.WriteLine("Error: Task title cannot exceed 100 characters.");
+            return;
+        }
+
         Console.Write("Enter task description: ");
         var description = Console.ReadLine()?.Trim() ?? "";
+
+        if (description.Length > 500)
+        {
+            Console.WriteLine("Error: Task description cannot exceed 500 characters.");
+            return;
+        }
 
         taskManager.AddTask(title, description);
         Console.WriteLine("✓ Task added successfully!");

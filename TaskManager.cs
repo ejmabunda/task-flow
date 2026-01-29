@@ -69,9 +69,16 @@ public class TaskManager
 
     private void SaveTasks()
     {
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        var json = JsonSerializer.Serialize(_tasks, options);
-        File.WriteAllText(_filePath, json);
+        try
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var json = JsonSerializer.Serialize(_tasks, options);
+            File.WriteAllText(_filePath, json);
+        }
+        catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+        {
+            Console.WriteLine($"Warning: Could not save tasks to file: {ex.Message}");
+        }
     }
 
     private void LoadTasks()
@@ -84,8 +91,11 @@ public class TaskManager
                 _tasks = JsonSerializer.Deserialize<List<TaskItem>>(json) ?? new List<TaskItem>();
                 _nextId = _tasks.Any() ? _tasks.Max(t => t.Id) + 1 : 1;
             }
-            catch
+            catch (Exception ex) when (ex is JsonException || ex is IOException)
             {
+                // Silently create new task list if file is corrupted or unreadable
+                // This allows the application to continue functioning even if the data file is damaged
+                Console.WriteLine($"Warning: Could not load tasks from file. Starting with empty task list. Error: {ex.Message}");
                 _tasks = new List<TaskItem>();
                 _nextId = 1;
             }
