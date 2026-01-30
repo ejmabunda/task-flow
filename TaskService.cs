@@ -2,12 +2,12 @@ namespace TaskFlow;
 
 public class TaskService
 {
-    public List<Task> tasks { get; set; }
+    public List<Task> Tasks { get; set; }
 
     // Constructor
     public TaskService()
     {
-        tasks = new List<Task>();
+        Tasks = new List<Task>();
     }
     
     /*
@@ -15,7 +15,7 @@ public class TaskService
     */
     public void AddTask(string title, string description)
     {
-        Task task = new Task(title: title, description: description);
+        Task Tasks = new Task(title: title, description: description);
 
         tasks.Add(task);
     }
@@ -24,14 +24,14 @@ public class TaskService
         Removes a task from the list of tasks.
         Returns the deleted task.
     */
-    public Task? DeleteTask(Task task)
+    public Task? DeleteTask(Task Task)
     {
-        foreach (Task item in tasks)
+        foreach (Task item in Tasks)
         {
-            if (task == item)
+            if (Task == item)
             {
-                tasks.Remove(task);
-                return task;
+                Tasks.Remove(task);
+                return Task;
             }
         }
         return null;
@@ -40,13 +40,13 @@ public class TaskService
     /*
         Marks a task as completed.
     */
-    public void CompleteTask(Task task)
+    public void CompleteTask(Task Task)
     {
-        for (int a = 0; a < tasks.Count(); a++)
+        for (int a = 0; a < Tasks.Count(); a++)
         {
-            if (tasks[a] == task)
+            if (Tasks[a] == Task)
             {
-                tasks[a].Status = true;
+                Tasks[a].Status = true;
                 break;
             }
         }
@@ -57,6 +57,6 @@ public class TaskService
     */
     public List<Task> GetAllTasks()
     {
-        return tasks;
+        return Tasks;
     }
 }
