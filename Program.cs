@@ -12,6 +12,11 @@ public class Program
             Console.WriteLine(GetMenuPrompt());
             string? input = Console.ReadLine();
 
+            if (input is null)
+            {
+                Console.WriteLine("Thank you for using the program.");
+                return;
+            }
             switch (input.Trim())
             {
                 case "1":
