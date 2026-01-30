@@ -24,13 +24,9 @@ public class TaskService
     */
     public Task DeleteTask(Task task)
     {
-        foreach (Task item in tasks)
+        if (tasks.Remove(task))
         {
-            if (task == item)
-            {
-                tasks.Remove(task);
-                return task;
-            }
+            return task;
         }
         return null;
     }
