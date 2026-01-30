@@ -22,7 +22,7 @@ public class TaskService
         Removes a task from the list of tasks.
         Returns the deleted task.
     */
-    public Task DeleteTask(Task task)
+    public Task? DeleteTask(Task task)
     {
         if (tasks.Remove(task))
         {
