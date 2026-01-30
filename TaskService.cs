@@ -2,19 +2,21 @@ namespace TaskFlow;
 
 public class TaskService
 {
-    public List<Task> tasks { get; set; }
+    public List<Task> Tasks { get; set; }
 
     // Constructor
     public TaskService()
     {
-        tasks = new List<Task>();
+        Tasks = new List<Task>();
     }
     
     /*
         Adds a Task to the list of tasks
     */
-    public void AddTask(Task task)
+    public void AddTask(string title, string description)
     {
+        Task Tasks = new Task(title: title, description: description);
+
         tasks.Add(task);
     }
 
@@ -34,7 +36,7 @@ public class TaskService
     /*
         Marks a task as completed.
     */
-    public void CompleteTask(Task task)
+    public void CompleteTask(Task Task)
     {
         foreach (var t in tasks)
         {
@@ -46,8 +48,11 @@ public class TaskService
         }
     }
 
+    /*
+        Return a list of all tasks
+    */
     public List<Task> GetAllTasks()
     {
-        return tasks;
+        return Tasks;
     }
 }
