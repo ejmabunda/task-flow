@@ -36,11 +36,11 @@ public class TaskService
     */
     public void CompleteTask(Task task)
     {
-        for (int index = 0; index < tasks.Count(); index++)
+        foreach (var t in tasks)
         {
-            if (tasks[index].Id == task.Id)
+            if (t == task)
             {
-                tasks[index].status = true;
+                t.status = true;
                 break;
             }
         }
