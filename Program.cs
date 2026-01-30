@@ -4,7 +4,7 @@ public class Program
 {
     static void Main(string[] args)
     {
-        TaskService taskService = new TaskService();
+        TaskService TaskService = new TaskService();
 
         // Main loop
         while (true)
@@ -15,12 +15,14 @@ public class Program
             switch (input.Trim())
             {
                 case "1":
-                    Console.WriteLine(DisplayAllTasks(taskService));
+                    string Message = $"You have {TaskService.GetAllTasks().Count()} tasks remaining.\n";
+                    Console.WriteLine(DisplayAllTasks(TaskService: TaskService, Message: Message));
                     break;
                 case "2":
-                    HandleAddTaskIO(taskService);
+                    HandleAddTaskIO(TaskService);
                     break;
                 case "3":
+                    HandleCompleteATaskIO(TaskService);
                     break;
                 case "4":
                     break;
@@ -49,18 +51,18 @@ What would you like to do:
 ";
     }
 
-    static string DisplayAllTasks(TaskService taskService)
+    static string DisplayAllTasks(TaskService TaskService, string Message)
     {
-        string text = $"You have {taskService.GetAllTasks().Count()} tasks remaining.\n";
-        for (int i = 0; i < taskService.GetAllTasks().Count(); i++)
+        string text = Message;
+        for (int i = 0; i < TaskService.GetAllTasks().Count(); i++)
         {
-            text += $"{i + 1} - {taskService.GetAllTasks()[i].ToString()}\n";
+            text += $"{i + 1} - {TaskService.GetAllTasks()[i].ToString()}\n";
         }
         
         return text;
     }
 
-    static void HandleAddTaskIO(TaskService taskService)
+    static void HandleAddTaskIO(TaskService TaskService)
     {
         Console.Write("Title: ");
         string title = Console.ReadLine();
@@ -68,7 +70,32 @@ What would you like to do:
         Console.Write("Description: ");
         string description = Console.ReadLine();
 
-        taskService.AddTask(title: title, description: description);
+        TaskService.AddTask(title: title, description: description);
         Console.WriteLine("Task added.");
+    }
+
+    static void HandleCompleteATaskIO(TaskService TaskService)
+    {
+        
+        int TaskNumber;
+        while (true)
+        {
+            string prompt = DisplayAllTasks(TaskService: TaskService, Message: "Choose a task to mark as complete.\n");
+            Console.WriteLine(prompt);
+            string Input = Console.ReadLine();
+
+            try 
+            {
+                TaskNumber = Convert.ToInt32(Input) - 1;
+                break;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Invalid input. Please choose a number from the provided list.");
+            }
+        }
+
+        TaskService.GetAllTasks()[TaskNumber].Status = true;
+        Console.WriteLine($"Well done! You completed '{TaskService.GetAllTasks()[TaskNumber].Title}'");
     }
 }
