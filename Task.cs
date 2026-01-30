@@ -6,6 +6,11 @@ public class Task
     public string Title { get; set; }
     public string Description { get; set; }
     public bool Status { get; set; }
+    public bool status
+    {
+        get => Status;
+        set => Status = value;
+    }
 
     public Task(string title, string description)
     {
