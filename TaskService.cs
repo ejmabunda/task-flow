@@ -36,11 +36,11 @@ public class TaskService
     */
     public void CompleteTask(Task task)
     {
-        for (int a = 0; a < tasks.Count(); a++)
+        for (int index = 0; index < tasks.Count(); index++)
         {
-            if (tasks[a] == task)
+            if (tasks[index] == task)
             {
-                tasks[a].status = true;
+                tasks[index].status = true;
                 break;
             }
         }
