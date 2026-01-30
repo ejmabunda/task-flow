@@ -38,7 +38,7 @@ public class TaskService
     {
         for (int index = 0; index < tasks.Count(); index++)
         {
-            if (tasks[index] == task)
+            if (tasks[index].Id == task.Id)
             {
                 tasks[index].status = true;
                 break;
