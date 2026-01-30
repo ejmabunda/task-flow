@@ -1,4 +1,5 @@
 namespace TaskFlow;
+
 public class Task
 {
     public Guid Id { get; set; }
@@ -12,5 +13,11 @@ public class Task
         this.Description = description;
         this.Status = false;
         this.Title = title;
+    }
+
+    public override string ToString()
+    {
+        string statusText = this.Status ? "Completed" : "Pending";
+        return $"[{statusText}] {this.Title}";
     }
 }

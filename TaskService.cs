@@ -13,8 +13,10 @@ public class TaskService
     /*
         Adds a Task to the list of tasks
     */
-    public void AddTask(Task task)
+    public void AddTask(string title, string description)
     {
+        Task task = new Task(title: title, description: description);
+
         tasks.Add(task);
     }
 
@@ -22,7 +24,7 @@ public class TaskService
         Removes a task from the list of tasks.
         Returns the deleted task.
     */
-    public Task DeleteTask(Task task)
+    public Task? DeleteTask(Task task)
     {
         foreach (Task item in tasks)
         {
@@ -44,12 +46,15 @@ public class TaskService
         {
             if (tasks[a] == task)
             {
-                tasks[a].status = true;
+                tasks[a].Status = true;
                 break;
             }
         }
     }
 
+    /*
+        Return a list of all tasks
+    */
     public List<Task> GetAllTasks()
     {
         return tasks;
