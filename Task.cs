@@ -8,7 +8,7 @@ public class Task
 
     public Task(string title, string description)
     {
-        this.Id = new Guid();
+        this.Id = Guid.NewGuid();
         this.Description = description;
         this.Status = false;
         this.Title = title;
