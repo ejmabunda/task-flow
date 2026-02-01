@@ -15,20 +15,20 @@ public class TaskService
     */
     public void AddTask(string title, string description)
     {
-        Task Tasks = new Task(title: title, description: description);
+        Task Task = new Task(title: title, description: description);
 
-        tasks.Add(task);
+        Tasks.Add(Task);
     }
 
     /*
         Removes a task from the list of tasks.
         Returns the deleted task.
     */
-    public Task? DeleteTask(Task task)
+    public Task? DeleteTask(Task Task)
     {
-        if (tasks.Remove(task))
+        if (Tasks.Remove(Task))
         {
-            return task;
+            return Task;
         }
         return null;
     }
@@ -38,9 +38,9 @@ public class TaskService
     */
     public void CompleteTask(Task Task)
     {
-        foreach (var t in tasks)
+        foreach (var t in Tasks)
         {
-            if (t == task)
+            if (t == Task)
             {
                 t.status = true;
                 break;
