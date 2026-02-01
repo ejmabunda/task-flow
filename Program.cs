@@ -54,9 +54,11 @@ What would you like to do:
     static string DisplayAllTasks(TaskService taskService, string message)
     {
         string text = message;
-        for (int i = 0; i < taskService.GetAllTasks().Count(); i++)
+        List<Task> tasks = taskService.GetAllTasks();
+
+        for (int i = 0; i < tasks.Count(); i++)
         {
-            text += $"{i + 1} - {taskService.GetAllTasks()[i].ToString()}\n";
+            text += $"{i + 1} - {tasks[i]}\n";
         }
         
         return text;
@@ -74,7 +76,8 @@ What would you like to do:
 
     static void HandleCompleteATaskIO(TaskService taskService)
     {
-        if (taskService.GetAllTasks().Count == 0)
+        List<Task> tasks = taskService.GetAllTasks();
+        if (tasks.Count == 0)
         {
             Console.WriteLine("There are currently no tasks.");
             return;
@@ -92,7 +95,7 @@ What would you like to do:
             try 
             {
                 taskNumber = Convert.ToInt32(input) - 1;
-                task = taskService.GetAllTasks()[taskNumber];
+                task = tasks[taskNumber];
                 break;
             }
             catch (Exception)
@@ -125,7 +128,7 @@ What would you like to do:
 
     static string GetErrorMessage()
     {
-        return "Something went wrong. Please try again.\n";
+        return "Input cannot be empty. Please try again.\n";
     }
 
     static void Exit()
