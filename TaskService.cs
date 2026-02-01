@@ -42,7 +42,7 @@ public class TaskService
         {
             if (t == Task)
             {
-                t.status = true;
+                t.Status = true;
                 break;
             }
         }
