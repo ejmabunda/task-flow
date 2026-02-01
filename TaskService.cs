@@ -1,29 +1,40 @@
 namespace TaskFlow;
 
+/// <summary>
+/// Provides services for managing tasks.
+/// </summary>
 public class TaskService
 {
+    /// <summary>
+    /// Gets or sets the list of tasks.
+    /// </summary>
     public List<Task> Tasks { get; set; }
 
-    // Constructor
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TaskService"/> class.
+    /// </summary>
     public TaskService()
     {
         Tasks = new List<Task>();
     }
     
-    /*
-        Adds a Task to the list of tasks
-    */
+    /// <summary>
+    /// Adds a new task to the service.
+    /// </summary>
+    /// <param name="title">The title of the task.</param>
+    /// <param name="description">The description of the task.</param>
     public void AddTask(string title, string description)
     {
-        Task Task = new Task(title: title, description: description);
+        Task task = new Task(title: title, description: description);
 
-        Tasks.Add(Task);
+        Tasks.Add(task);
     }
 
-    /*
-        Removes a task from the list of tasks.
-        Returns the deleted task.
-    */
+    /// <summary>
+    /// Removes a task from the service.
+    /// </summary>
+    /// <param name="task">The task to remove.</param>
+    /// <returns>The removed task if found; otherwise, null.</returns>
     public Task? DeleteTask(Task task)
     {
         if (Tasks.Remove(task))
@@ -33,9 +44,10 @@ public class TaskService
         return null;
     }
 
-    /*
-        Marks a task as completed.
-    */
+    /// <summary>
+    /// Marks a task as completed.
+    /// </summary>
+    /// <param name="task">The task to complete.</param>
     public void CompleteTask(Task task)
     {
         foreach (var t in Tasks)
@@ -48,9 +60,10 @@ public class TaskService
         }
     }
 
-    /*
-        Return a list of all tasks
-    */
+    /// <summary>
+    /// Retrieves all tasks.
+    /// </summary>
+    /// <returns>A list of all tasks.</returns>
     public List<Task> GetAllTasks()
     {
         return Tasks;
