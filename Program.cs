@@ -10,13 +10,8 @@ public class Program
         while (true)
         {
             Console.WriteLine(GetMenuPrompt());
-            string? input = Console.ReadLine();
+            string? input = GetInput("");
 
-            if (input is null)
-            {
-                Console.WriteLine("Thank you for using the program.");
-                return;
-            }
             switch (input.Trim())
             {
                 case "1":
@@ -35,6 +30,7 @@ public class Program
                     Exit();
                     break;
                 default:
+                    Console.WriteLine(GetErrorMessage());
                     break;
             }
         }
@@ -67,11 +63,9 @@ What would you like to do:
 
     static void HandleAddTaskIO(TaskService TaskService)
     {
-        Console.Write("Title: ");
-        string title = Console.ReadLine();
+        string? title = GetInput("Title: ");
 
-        Console.Write("Description: ");
-        string description = Console.ReadLine();
+        string? description = GetInput("Description: ");
 
         TaskService.AddTask(title: title, description: description);
         Console.WriteLine("Task added.");
@@ -85,7 +79,7 @@ What would you like to do:
         {
             string prompt = DisplayAllTasks(TaskService: TaskService, Message: "Choose a task to mark as complete.\n");
             Console.WriteLine(prompt);
-            string Input = Console.ReadLine();
+            string Input = GetInput("");
 
             try 
             {
@@ -94,6 +88,7 @@ What would you like to do:
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 Console.WriteLine("Invalid input. Please choose a number from the provided list.");
             }
         }
@@ -101,6 +96,27 @@ What would you like to do:
         Task Task = TaskService.GetAllTasks()[TaskNumber];
         TaskService.CompleteTask(Task);
         Console.WriteLine($"Well done! You completed '{TaskService.GetAllTasks()[TaskNumber].Title}'");
+    }
+
+    static string GetInput(string Message)
+    {
+        string? input;
+        do
+        {
+            Console.Write(Message.Trim() == "" ? "" : $"{Message}: ");
+            input = Console.ReadLine();
+
+            if (input == "")
+                Console.WriteLine(GetErrorMessage());
+        }
+        while (input == "" || input is null);
+
+        return input;
+    }
+
+    static string GetErrorMessage()
+    {
+        return "Something went wrong. Please try again.\n";
     }
 
     static void Exit()
