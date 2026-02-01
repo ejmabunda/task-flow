@@ -32,14 +32,12 @@ public class Program
                 case "4":
                     break;
                 case "5":
-                    Console.WriteLine("Thank you for using the program.");
-                    return;
+                    Exit();
+                    break;
                 default:
                     break;
             }
         }
-
-        Console.WriteLine("Thank you for using the program :)");
     }
 
     static string GetMenuPrompt()
@@ -103,5 +101,11 @@ What would you like to do:
         Task Task = TaskService.GetAllTasks()[TaskNumber];
         TaskService.CompleteTask(Task);
         Console.WriteLine($"Well done! You completed '{TaskService.GetAllTasks()[TaskNumber].Title}'");
+    }
+
+    static void Exit()
+    {
+        Console.WriteLine("Thank you for using the program :)");
+        Environment.Exit(1);
     }
 }
