@@ -98,9 +98,17 @@ What would you like to do:
                 task = tasks[taskNumber];
                 break;
             }
-            catch (Exception)
+            catch (System.ArgumentOutOfRangeException)
+            {
+                Console.WriteLine($"Task does not exist yet. Please choose a number from the provided list.");
+            }
+            catch (System.FormatException)
             {
                 Console.WriteLine("Invalid input. Please choose a number from the provided list.");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Something went wrong. Please try again.")
             }
         }
         taskService.CompleteTask(task);
