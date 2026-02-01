@@ -15,9 +15,9 @@ public class TaskService
     */
     public void AddTask(string title, string description)
     {
-        Task Task = new Task(title: title, description: description);
+        Task task = new Task(title: title, description: description);
 
-        Tasks.Add(Task);
+        Tasks.Add(task);
     }
 
     /*

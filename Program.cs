@@ -25,7 +25,7 @@ public class Program
                     HandleCompleteATaskIO(taskService);
                     break;
                 case "4":
-                    // TODO: Handle task deletion
+                    HandleDeleteATaskIO(taskService);
                     break;
                 case "5":
                     Exit();
@@ -74,12 +74,13 @@ What would you like to do:
         Console.WriteLine("Task added.");
     }
 
-    static void HandleCompleteATaskIO(TaskService taskService)
+    static void SelectAndProcessTask(TaskService taskService, bool delete = false)
     {
+        string action = delete ? "delete." : "mark as complete.";
         List<Task> tasks = taskService.GetAllTasks();
         if (tasks.Count == 0)
         {
-            Console.WriteLine("There are currently no tasks.");
+            Console.WriteLine($"There are currently no tasks available to {action.TrimEnd('.')}.");
             return;
         }
 
@@ -88,7 +89,7 @@ What would you like to do:
 
         while (true)
         {
-            string prompt = DisplayAllTasks(taskService: taskService, message: "Choose a task to mark as complete.\n");
+            string prompt = DisplayAllTasks(taskService: taskService, message: $"Choose a task to {action}\n");
             Console.WriteLine(prompt);
             string input = GetInput("");
 
@@ -98,11 +99,11 @@ What would you like to do:
                 task = tasks[taskNumber];
                 break;
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 Console.WriteLine($"Task does not exist yet. Please choose a number from the provided list.");
             }
-            catch (System.FormatException)
+            catch (FormatException)
             {
                 Console.WriteLine("Invalid input. Please choose a number from the provided list.");
             }
@@ -111,8 +112,24 @@ What would you like to do:
                 Console.WriteLine("Something went wrong. Please try again.");
             }
         }
-        taskService.CompleteTask(task);
-        Console.WriteLine($"Well done! You completed '{task.Title}'.");
+
+        if (delete)
+            taskService.DeleteTask(task);
+        else
+            taskService.CompleteTask(task);
+
+        string message = delete ? $"You deleted '{task.Title}'." : $"Well done! You completed '{task.Title}'.";
+
+        Console.WriteLine(message);
+    }
+    static void HandleDeleteATaskIO(TaskService taskService)
+    {
+        SelectAndProcessTask(taskService, delete: true);
+    }
+
+    static void HandleCompleteATaskIO(TaskService taskService)
+    {
+        SelectAndProcessTask(taskService, delete: false);
     }
 
     static string GetInput(string message)
