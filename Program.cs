@@ -4,42 +4,37 @@ public class Program
 {
     static void Main(string[] args)
     {
-        TaskService TaskService = new TaskService();
+        TaskService taskService = new TaskService();
 
         // Main loop
         while (true)
         {
             Console.WriteLine(GetMenuPrompt());
-            string? input = Console.ReadLine();
+            string? input = GetInput("");
 
-            if (input is null)
-            {
-                Console.WriteLine("Thank you for using the program.");
-                return;
-            }
             switch (input.Trim())
             {
                 case "1":
-                    string Message = $"You have {TaskService.GetAllTasks().Count()} tasks remaining.\n";
-                    Console.WriteLine(DisplayAllTasks(TaskService: TaskService, Message: Message));
+                    string message = $"You have {taskService.GetAllTasks().Count()} tasks remaining.\n";
+                    Console.WriteLine(DisplayAllTasks(taskService: taskService, message: message));
                     break;
                 case "2":
-                    HandleAddTaskIO(TaskService);
+                    HandleAddTaskIO(taskService);
                     break;
                 case "3":
-                    HandleCompleteATaskIO(TaskService);
+                    HandleCompleteATaskIO(taskService);
                     break;
                 case "4":
+                    // TODO: Handle task deletion
                     break;
                 case "5":
-                    Console.WriteLine("Thank you for using the program.");
-                    return;
+                    Exit();
+                    break;
                 default:
+                    Console.WriteLine(GetErrorMessage());
                     break;
             }
         }
-
-        Console.WriteLine("Thank you for using the program :)");
     }
 
     static string GetMenuPrompt()
@@ -56,51 +51,97 @@ What would you like to do:
 ";
     }
 
-    static string DisplayAllTasks(TaskService TaskService, string Message)
+    static string DisplayAllTasks(TaskService taskService, string message)
     {
-        string text = Message;
-        for (int i = 0; i < TaskService.GetAllTasks().Count(); i++)
+        string text = message;
+        List<Task> tasks = taskService.GetAllTasks();
+
+        for (int i = 0; i < tasks.Count(); i++)
         {
-            text += $"{i + 1} - {TaskService.GetAllTasks()[i].ToString()}\n";
+            text += $"{i + 1} - {tasks[i]}\n";
         }
         
         return text;
     }
 
-    static void HandleAddTaskIO(TaskService TaskService)
+    static void HandleAddTaskIO(TaskService taskService)
     {
-        Console.Write("Title: ");
-        string title = Console.ReadLine();
+        string title = GetInput("Title");
 
-        Console.Write("Description: ");
-        string description = Console.ReadLine();
+        string description = GetInput("Description");
 
-        TaskService.AddTask(title: title, description: description);
+        taskService.AddTask(title: title, description: description);
         Console.WriteLine("Task added.");
     }
 
-    static void HandleCompleteATaskIO(TaskService TaskService)
+    static void HandleCompleteATaskIO(TaskService taskService)
     {
-        
-        int TaskNumber;
+        List<Task> tasks = taskService.GetAllTasks();
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("There are currently no tasks.");
+            return;
+        }
+
+        int taskNumber;
+        Task task;
+
         while (true)
         {
-            string prompt = DisplayAllTasks(TaskService: TaskService, Message: "Choose a task to mark as complete.\n");
+            string prompt = DisplayAllTasks(taskService: taskService, message: "Choose a task to mark as complete.\n");
             Console.WriteLine(prompt);
-            string Input = Console.ReadLine();
+            string input = GetInput("");
 
             try 
             {
-                TaskNumber = Convert.ToInt32(Input) - 1;
+                taskNumber = Convert.ToInt32(input) - 1;
+                task = tasks[taskNumber];
                 break;
             }
-            catch (Exception e)
+            catch (System.ArgumentOutOfRangeException)
+            {
+                Console.WriteLine($"Task does not exist yet. Please choose a number from the provided list.");
+            }
+            catch (System.FormatException)
             {
                 Console.WriteLine("Invalid input. Please choose a number from the provided list.");
             }
+            catch (Exception)
+            {
+                Console.WriteLine("Something went wrong. Please try again.");
+            }
         }
+        taskService.CompleteTask(task);
+        Console.WriteLine($"Well done! You completed '{task.Title}'.");
+    }
 
-        TaskService.GetAllTasks()[TaskNumber].Status = true;
-        Console.WriteLine($"Well done! You completed '{TaskService.GetAllTasks()[TaskNumber].Title}'");
+    static string GetInput(string message)
+    {
+        string? input;
+        do
+        {
+            Console.Write(message.Trim() == "" ? "" : $"{message}: ");
+            input = Console.ReadLine();
+
+            if (input is null)
+                Exit();
+
+            else if (input == "")
+                Console.WriteLine(GetErrorMessage());
+        }
+        while (input == "" || input is null);
+
+        return input;
+    }
+
+    static string GetErrorMessage()
+    {
+        return "Input cannot be empty. Please try again.\n";
+    }
+
+    static void Exit()
+    {
+        Console.WriteLine("Thank you for using the program :)");
+        Environment.Exit(0);
     }
 }

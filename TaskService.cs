@@ -15,9 +15,9 @@ public class TaskService
     */
     public void AddTask(string title, string description)
     {
-        Task Tasks = new Task(title: title, description: description);
+        Task Task = new Task(title: title, description: description);
 
-        tasks.Add(task);
+        Tasks.Add(Task);
     }
 
     /*
@@ -26,7 +26,7 @@ public class TaskService
     */
     public Task? DeleteTask(Task task)
     {
-        if (tasks.Remove(task))
+        if (Tasks.Remove(task))
         {
             return task;
         }
@@ -36,13 +36,13 @@ public class TaskService
     /*
         Marks a task as completed.
     */
-    public void CompleteTask(Task Task)
+    public void CompleteTask(Task task)
     {
-        foreach (var t in tasks)
+        foreach (var t in Tasks)
         {
             if (t == task)
             {
-                t.status = true;
+                t.Status = true;
                 break;
             }
         }
