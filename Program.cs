@@ -112,10 +112,13 @@ What would you like to do:
             Console.Write(message.Trim() == "" ? "" : $"{message}: ");
             input = Console.ReadLine();
 
-            if (input == "")
+            if (input is null)
+                Exit();
+
+            else if (input == "")
                 Console.WriteLine(GetErrorMessage());
         }
-        while (input == "" || input is null);
+        while (input == "");
 
         return input;
     }
