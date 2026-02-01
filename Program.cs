@@ -95,7 +95,7 @@ What would you like to do:
                 task = taskService.GetAllTasks()[taskNumber];
                 break;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Invalid input. Please choose a number from the provided list.");
             }
