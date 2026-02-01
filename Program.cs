@@ -131,6 +131,6 @@ What would you like to do:
     static void Exit()
     {
         Console.WriteLine("Thank you for using the program :)");
-        Environment.Exit(1);
+        Environment.Exit(0);
     }
 }
