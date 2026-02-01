@@ -4,7 +4,7 @@ public class Program
 {
     static void Main(string[] args)
     {
-        TaskService TaskService = new TaskService();
+        TaskService taskService = new TaskService();
 
         // Main loop
         while (true)
@@ -15,16 +15,17 @@ public class Program
             switch (input.Trim())
             {
                 case "1":
-                    string Message = $"You have {TaskService.GetAllTasks().Count()} tasks remaining.\n";
-                    Console.WriteLine(DisplayAllTasks(TaskService: TaskService, Message: Message));
+                    string message = $"You have {taskService.GetAllTasks().Count()} tasks remaining.\n";
+                    Console.WriteLine(DisplayAllTasks(taskService: taskService, message: message));
                     break;
                 case "2":
-                    HandleAddTaskIO(TaskService);
+                    HandleAddTaskIO(taskService);
                     break;
                 case "3":
-                    HandleCompleteATaskIO(TaskService);
+                    HandleCompleteATaskIO(taskService);
                     break;
                 case "4":
+                    // TODO: Handle task deletion
                     break;
                 case "5":
                     Exit();
@@ -50,60 +51,65 @@ What would you like to do:
 ";
     }
 
-    static string DisplayAllTasks(TaskService TaskService, string Message)
+    static string DisplayAllTasks(TaskService taskService, string message)
     {
-        string text = Message;
-        for (int i = 0; i < TaskService.GetAllTasks().Count(); i++)
+        string text = message;
+        for (int i = 0; i < taskService.GetAllTasks().Count(); i++)
         {
-            text += $"{i + 1} - {TaskService.GetAllTasks()[i].ToString()}\n";
+            text += $"{i + 1} - {taskService.GetAllTasks()[i].ToString()}\n";
         }
         
         return text;
     }
 
-    static void HandleAddTaskIO(TaskService TaskService)
+    static void HandleAddTaskIO(TaskService taskService)
     {
-        string? title = GetInput("Title: ");
+        string? title = GetInput("Title");
 
-        string? description = GetInput("Description: ");
+        string? description = GetInput("Description");
 
-        TaskService.AddTask(title: title, description: description);
+        taskService.AddTask(title: title, description: description);
         Console.WriteLine("Task added.");
     }
 
-    static void HandleCompleteATaskIO(TaskService TaskService)
+    static void HandleCompleteATaskIO(TaskService taskService)
     {
-        
-        int TaskNumber;
+        if (taskService.GetAllTasks().Count == 0)
+        {
+            Console.WriteLine("There are currently no tasks.");
+            return;
+        }
+
+        int taskNumber;
+        Task task;
+
         while (true)
         {
-            string prompt = DisplayAllTasks(TaskService: TaskService, Message: "Choose a task to mark as complete.\n");
+            string prompt = DisplayAllTasks(taskService: taskService, message: "Choose a task to mark as complete.\n");
             Console.WriteLine(prompt);
-            string Input = GetInput("");
+            string input = GetInput("");
 
             try 
             {
-                TaskNumber = Convert.ToInt32(Input) - 1;
+                taskNumber = Convert.ToInt32(input) - 1;
+                task = taskService.GetAllTasks()[taskNumber];
                 break;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
                 Console.WriteLine("Invalid input. Please choose a number from the provided list.");
             }
         }
-
-        Task Task = TaskService.GetAllTasks()[TaskNumber];
-        TaskService.CompleteTask(Task);
-        Console.WriteLine($"Well done! You completed '{TaskService.GetAllTasks()[TaskNumber].Title}'");
+        taskService.CompleteTask(task);
+        Console.WriteLine($"Well done! You completed '{task.Title}'.");
     }
 
-    static string GetInput(string Message)
+    static string GetInput(string message)
     {
         string? input;
         do
         {
-            Console.Write(Message.Trim() == "" ? "" : $"{Message}: ");
+            Console.Write(message.Trim() == "" ? "" : $"{message}: ");
             input = Console.ReadLine();
 
             if (input == "")

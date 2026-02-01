@@ -24,11 +24,11 @@ public class TaskService
         Removes a task from the list of tasks.
         Returns the deleted task.
     */
-    public Task? DeleteTask(Task Task)
+    public Task? DeleteTask(Task task)
     {
-        if (Tasks.Remove(Task))
+        if (Tasks.Remove(task))
         {
-            return Task;
+            return task;
         }
         return null;
     }
@@ -36,11 +36,11 @@ public class TaskService
     /*
         Marks a task as completed.
     */
-    public void CompleteTask(Task Task)
+    public void CompleteTask(Task task)
     {
         foreach (var t in Tasks)
         {
-            if (t == Task)
+            if (t == task)
             {
                 t.Status = true;
                 break;
