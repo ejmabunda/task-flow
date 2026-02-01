@@ -100,7 +100,7 @@ What would you like to do:
             }
         }
 
-        TaskService.GetAllTasks()[TaskNumber].Status = true;
+        TaskService.GetAllTasks()[TaskNumber].CompleteTask();
         Console.WriteLine($"Well done! You completed '{TaskService.GetAllTasks()[TaskNumber].Title}'");
     }
 }
