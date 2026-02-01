@@ -1,7 +1,14 @@
 ﻿namespace TaskFlow;
 
+/// <summary>
+/// The main entry point for the TaskFlow application.
+/// </summary>
 public class Program
 {
+    /// <summary>
+    /// The main execution method of the application.
+    /// </summary>
+    /// <param name="args">Command line arguments.</param>
     static void Main(string[] args)
     {
         TaskService taskService = new TaskService();
@@ -37,6 +44,10 @@ public class Program
         }
     }
 
+    /// <summary>
+    /// Gets the menu prompt for the main application loop.
+    /// </summary>
+    /// <returns>A string containing the menu options.</returns>
     static string GetMenuPrompt()
     {
         return
@@ -51,6 +62,12 @@ What would you like to do:
 ";
     }
 
+    /// <summary>
+    /// Displays all tasks currently in the task service.
+    /// </summary>
+    /// <param name="taskService">The task service instance.</param>
+    /// <param name="message">A message to display before the list of tasks.</param>
+    /// <returns>A formatted string of all tasks.</returns>
     static string DisplayAllTasks(TaskService taskService, string message)
     {
         string text = message;
@@ -64,6 +81,10 @@ What would you like to do:
         return text;
     }
 
+    /// <summary>
+    /// Handles the input/output for adding a new task.
+    /// </summary>
+    /// <param name="taskService">The task service instance.</param>
     static void HandleAddTaskIO(TaskService taskService)
     {
         string title = GetInput("Title");
@@ -74,13 +95,18 @@ What would you like to do:
         Console.WriteLine("Task added.");
     }
 
+    /// <summary>
+    /// Selects a task and performs an action (delete or complete) based on user input.
+    /// </summary>
+    /// <param name="taskService">The task service instance.</param>
+    /// <param name="delete">If true, the selected task will be deleted; otherwise, it will be marked as complete.</param>
     static void SelectAndProcessTask(TaskService taskService, bool delete = false)
     {
-        string action = delete ? "delete." : "mark as complete.";
+        string action = delete ? "delete" : "mark as complete";
         List<Task> tasks = taskService.GetAllTasks();
         if (tasks.Count == 0)
         {
-            Console.WriteLine($"There are currently no tasks available to {action.TrimEnd('.')}.");
+            Console.WriteLine($"There are currently no tasks available to {action}.");
             return;
         }
 
@@ -122,16 +148,30 @@ What would you like to do:
 
         Console.WriteLine(message);
     }
+
+    /// <summary>
+    /// Handles the input/output for deleting a task.
+    /// </summary>
+    /// <param name="taskService">The task service instance.</param>
     static void HandleDeleteATaskIO(TaskService taskService)
     {
         SelectAndProcessTask(taskService, delete: true);
     }
 
+    /// <summary>
+    /// Handles the input/output for deleting a task
+    /// </summary>
+    /// <param name="taskService">The task service instance</param>
     static void HandleCompleteATaskIO(TaskService taskService)
     {
         SelectAndProcessTask(taskService, delete: false);
     }
 
+    /// <summary>
+    /// Gets input from the console with a prompt message.
+    /// </summary>
+    /// <param name="message">The prompt message to display.</param>
+    /// <returns>The user input string.</returns>
     static string GetInput(string message)
     {
         string? input;
@@ -151,11 +191,18 @@ What would you like to do:
         return input;
     }
 
+    /// <summary>
+    /// Gets the standard error message for invalid input.
+    /// </summary>
+    /// <returns>The error message string.</returns>
     static string GetErrorMessage()
     {
         return "Input cannot be empty. Please try again.\n";
     }
 
+    /// <summary>
+    /// Exits the application cleanly.
+    /// </summary>
     static void Exit()
     {
         Console.WriteLine("Thank you for using the program :)");
