@@ -66,9 +66,9 @@ What would you like to do:
 
     static void HandleAddTaskIO(TaskService taskService)
     {
-        string? title = GetInput("Title");
+        string title = GetInput("Title");
 
-        string? description = GetInput("Description");
+        string description = GetInput("Description");
 
         taskService.AddTask(title: title, description: description);
         Console.WriteLine("Task added.");
@@ -108,7 +108,7 @@ What would you like to do:
             }
             catch (Exception)
             {
-                Console.WriteLine("Something went wrong. Please try again.")
+                Console.WriteLine("Something went wrong. Please try again.");
             }
         }
         taskService.CompleteTask(task);
