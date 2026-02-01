@@ -118,7 +118,7 @@ What would you like to do:
             else if (input == "")
                 Console.WriteLine(GetErrorMessage());
         }
-        while (input == "");
+        while (input == "" || input is null);
 
         return input;
     }
